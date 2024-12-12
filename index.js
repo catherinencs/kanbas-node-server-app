@@ -1,5 +1,7 @@
 import session from "express-session";
-import express from 'express'
+import express from 'express';
+import mongoose from "mongoose";
+import "dotenv/config";
 import Hello from "./Hello.js"
 import Lab5 from "./Lab5/index.js";
 import cors from "cors";
@@ -8,9 +10,11 @@ import CourseRoutes from "./Kanbas/Courses/routes.js";
 import ModuleRoutes from "./Kanbas/Modules/routes.js";
 import AssignmentRoutes from "./Kanbas/Assignments/routes.js";
 import EnrollmentsRoutes from "./Kanbas/Enrollments/routes.js";
-
-
 import "dotenv/config";
+
+
+const CONNECTION_STRING = "mongodb+srv://catherinencs:123@kanbas.jyopw.mongodb.net/kanbas"
+mongoose.connect(CONNECTION_STRING);
 
 const app = express()
 app.use(cors({

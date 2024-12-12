@@ -1,8 +1,10 @@
-import Database from "../Database/index.js";
+import model from "./model.js";
+import enrollmentModel from "../Enrollments/model.js";
 
 export function findAllCourses() {
-  return Database.courses;
-}
+  return model.find();
+ }
+
 
 export function findCoursesForEnrolledUser(userId) {
     const { courses, enrollments } = Database;
@@ -10,23 +12,29 @@ export function findCoursesForEnrolledUser(userId) {
       enrollments.some((enrollment) => enrollment.user === userId && enrollment.course === course._id));
     return enrolledCourses;
   }
+
   
   export function createCourse(course) {
-    const newCourse = { ...course, _id: Date.now().toString() };
-    Database.courses = [...Database.courses, newCourse];
-    return newCourse;
-  }
-
-  export function deleteCourse(courseId) {
-    const { courses } = Database; 
-    Database.courses = courses.filter((course) => course._id !== courseId);
-    return { success: true, message: "Course deleted successfully" };
+    delete course._id;
+    return model.create(course);
   }
   
+export async function deleteCourse(courseId) {
+  try {
+    // Delete the course
+    const result = await model.deleteOne({ _id: courseId });
+
+    // Delete all enrollments tied to this course
+    await enrollmentModel.deleteMany({ course: courseId });
+
+    return result;
+  } catch (error) {
+    console.error("Error deleting course and related enrollments:", error);
+    throw error; 
+  }
+}
+  
   export function updateCourse(courseId, courseUpdates) {
-    const { courses } = Database;
-    const course = courses.find((course) => course._id === courseId);
-    Object.assign(course, courseUpdates);
-    return course;
+    return model.updateOne({ _id: courseId }, { $set: courseUpdates });
   }
   
