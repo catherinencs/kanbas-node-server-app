@@ -10,7 +10,10 @@ import CourseRoutes from "./Kanbas/Courses/routes.js";
 import ModuleRoutes from "./Kanbas/Modules/routes.js";
 import AssignmentRoutes from "./Kanbas/Assignments/routes.js";
 import EnrollmentsRoutes from "./Kanbas/Enrollments/routes.js";
+import QuizRoutes from "./Kanbas/Quizzes/routes.js";
+import AttemptsRoutes from "./Kanbas/Attempts/routes.js";
 import "dotenv/config";
+
 
 
 const CONNECTION_STRING = "mongodb+srv://catherinencs:123@kanbas.jyopw.mongodb.net/kanbas"
@@ -44,4 +47,6 @@ CourseRoutes(app);
 ModuleRoutes(app);
 AssignmentRoutes(app);
 EnrollmentsRoutes(app);
+QuizRoutes(app);
+AttemptsRoutes(app);
 app.listen(process.env.PORT || 4000)
